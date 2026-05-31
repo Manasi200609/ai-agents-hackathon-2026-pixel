@@ -1,0 +1,25 @@
+{
+  "name": "वैद्या - तुमची आरोग्य साथी",
+  "short_name": "वैद्या",
+  "description": "AI health assistant for rural Maharashtra",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#110d09",
+  "theme_color": "#e8a84c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

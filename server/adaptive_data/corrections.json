@@ -1,0 +1,16 @@
+[
+  {
+    "id": "corr_1779908924802",
+    "original_input": "rakta jaty",
+    "ai_interpretation": "काही गंभीर लक्षण दिसत नाहीत की जसे दizziness, blurred vision, breathing difficulty, vomiting, loose motions, blood, chest pain, किंवा unconsciousness?",
+    "correct_meaning": "रक्त जातंय = रक्तस्राव होत आहे",
+    "dialect": "rural",
+    "language": "mr",
+    "severity": "LOW",
+    "user_role": "patient",
+    "domain": "rural_health_symptoms",
+    "source": "vaidya_user_correction",
+    "verified": true,
+    "created_at": "2026-05-27T19:08:44.802Z"
+  }
+]
