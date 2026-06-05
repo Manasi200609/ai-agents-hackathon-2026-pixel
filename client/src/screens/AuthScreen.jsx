@@ -128,15 +128,15 @@ export default function AuthScreen() {
     }
   }
 
-  return (
-    <div className="auth-screen">
-      <div className="auth-logo">
-        <div className="auth-logo-icon">व</div>
-        <h1 className="auth-logo-name">वैद्या</h1>
-        <p className="auth-logo-tagline">तुमची ग्रामीण आरोग्य साथी</p>
-      </div>
+   return (
+    <div className="auth-screen premium-auth-screen">
+      <div className="premium-auth-card">
+        <div className="auth-logo">
+          <div className="auth-logo-icon">व</div>
+          <h1 className="auth-logo-name">वैद्या</h1>
+          <p className="auth-logo-tagline">तुमची ग्रामीण आरोग्य साथी</p>
+        </div>
 
-      <div className="auth-card">
         {authStep === 'login' && (
           <>
             <h2 className="auth-title">स्वागत आहे</h2>
@@ -177,12 +177,12 @@ export default function AuthScreen() {
             <div className="form-group">
               <label className="form-label">Preferred Language</label>
 
-              <div className="language-grid">
+              <div className="auth-language-grid">
                 {LANGUAGES.map((lang) => (
                   <button
                     type="button"
                     key={lang.code}
-                    className={`language-btn ${
+                    className={`auth-language-btn ${
                       language === lang.code ? 'active selected' : ''
                     }`}
                     onClick={() => handleLanguageChange(lang.code)}
@@ -253,11 +253,11 @@ export default function AuthScreen() {
             </button>
           </div>
         )}
-      </div>
 
-      <p className="auth-disclaimer">
-        By continuing, you agree to Vaidya Terms & Privacy Policy.
-      </p>
+        <p className="auth-disclaimer">
+          By continuing, you agree to Vaidya Terms & Privacy Policy.
+        </p>
+      </div>
     </div>
   );
 }

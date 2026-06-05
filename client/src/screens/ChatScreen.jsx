@@ -11,8 +11,7 @@ export default function ChatScreen({ initialMessage, onCallASHA }) {
   return (
     <div className="screen chat-screen">
       <DatasetStats />
-
-      {/* Avatar */}
+        {/* Avatar */}
       <div className="chat-avatar-wrap">
         <VaidyaAvatar
           speaking={speaking}
@@ -27,5 +26,6 @@ export default function ChatScreen({ initialMessage, onCallASHA }) {
         onCallASHA={onCallASHA}
       />
     </div>
+  
   );
 }

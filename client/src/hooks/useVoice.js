@@ -1,54 +1,94 @@
-import { useRef, useState } from 'react';
-import { speakText } from '../api/index';
+import { useState } from 'react';
+
+const LANG_MAP = {
+  mr: 'mr-IN',
+  hi: 'hi-IN',
+  en: 'en-IN',
+  gu: 'gu-IN',
+  ta: 'ta-IN',
+  te: 'te-IN',
+  kn: 'kn-IN',
+  ml: 'ml-IN',
+  pa: 'pa-IN',
+  bn: 'bn-IN',
+  as: 'as-IN',
+  ks: 'ur-IN',
+};
 
 export function useVoice() {
-  const [speaking, setSpeaking] = useState(false);
-  const audioRef = useRef(null);
+  const [listening, setListening] = useState(false);
+  const [voiceError, setVoiceError] = useState('');
 
-  async function speak(text, langCode = 'mr-IN') {
-    if (!text || !text.trim()) return;
+  function startListening(language = 'mr', onResult) {
+    setVoiceError('');
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setVoiceError('Voice recognition is not supported in this browser.');
+      return;
+    }
+
+    if (
+      window.location.protocol !== 'https:' &&
+      window.location.hostname !== 'localhost'
+    ) {
+      setVoiceError('Voice input works only on HTTPS or localhost.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = LANG_MAP[language] || 'mr-IN';
+    recognition.interimResults = false;
+    recognition.continuous = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results?.[0]?.[0]?.transcript || '';
+
+      if (transcript && onResult) {
+        onResult(transcript);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+
+      if (event.error === 'not-allowed') {
+        setVoiceError('Microphone permission was denied.');
+      } else if (event.error === 'no-speech') {
+        setVoiceError('No speech detected. Please try again.');
+      } else if (event.error === 'network') {
+        setVoiceError('Speech recognition needs internet connection.');
+      } else {
+        setVoiceError(`Voice error: ${event.error}`);
+      }
+
+      setListening(false);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+    };
 
     try {
-      stop();
-
-      setSpeaking(true);
-
-      const audioBlob = await speakText(text, langCode);
-      const audioUrl = URL.createObjectURL(audioBlob);
-
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
-
-      audio.onended = () => {
-        setSpeaking(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      audio.onerror = () => {
-        setSpeaking(false);
-        URL.revokeObjectURL(audioUrl);
-      };
-
-      await audio.play();
+      recognition.start();
     } catch (err) {
-      console.error('TTS playback failed:', err);
-      setSpeaking(false);
+      console.error('Recognition start failed:', err);
+      setVoiceError('Could not start voice recognition.');
+      setListening(false);
     }
-  }
-
-  function stop() {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current = null;
-    }
-
-    setSpeaking(false);
   }
 
   return {
-    speak,
-    stop,
-    speaking
+    listening,
+    voiceError,
+    startListening,
   };
 }

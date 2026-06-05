@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useChat } from '../hooks/useChat';
 import { useVoice } from '../hooks/useVoice';
 import { useLanguage } from '../context/LanguageContext';
@@ -16,16 +16,26 @@ export default function ChatWindow({ initialMessage, onCallASHA }) {
   const textareaRef = useRef(null);
   const initialSent = useRef(false);
 
-  function speakInSelectedLanguage(text) {
-    speak(text, speechCode || langCode || 'mr');
-  }
+  const speakInSelectedLanguage = useCallback(
+    (text) => {
+      if (!text) return;
+
+      if (typeof speak !== 'function') {
+        console.warn('speak is not available from useVoice');
+        return;
+      }
+
+      speak(text, speechCode || 'mr-IN');
+    },
+    [speak, speechCode]
+  );
 
   useEffect(() => {
     if (initialMessage && !initialSent.current) {
       initialSent.current = true;
       send(initialMessage, speakInSelectedLanguage, langCode);
     }
-  }, [initialMessage, langCode]);
+  }, [initialMessage, langCode, send, speakInSelectedLanguage]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -33,6 +43,7 @@ export default function ChatWindow({ initialMessage, onCallASHA }) {
 
   function handleSend() {
     if (!input.trim() || loading) return;
+
     send(input, speakInSelectedLanguage, langCode);
     setInput('');
     textareaRef.current?.focus();
@@ -43,7 +54,8 @@ export default function ChatWindow({ initialMessage, onCallASHA }) {
   }
 
   function handleVoiceAutoSend(text) {
-    if (!text.trim() || loading) return;
+    if (!text?.trim() || loading) return;
+
     send(text, speakInSelectedLanguage, langCode);
     setInput('');
     textareaRef.current?.focus();
@@ -99,7 +111,7 @@ export default function ChatWindow({ initialMessage, onCallASHA }) {
         <VoiceInput
           onResult={handleVoiceResult}
           onAutoSend={handleVoiceAutoSend}
-          speechCode={speechCode}
+          speechCode={speechCode || 'mr-IN'}
           disabled={loading}
           autoSend={false}
         />
