@@ -6,7 +6,6 @@ export default function BottomNav({ active, onChange }) {
   const TABS = [
     { id: 'home',    icon: '🏠', label: ui.greeting?.split(' ')[0] || 'मुख्यपान' },
     { id: 'chat',    icon: '💬', label: 'Chat' },
-    { id: 'asha',    icon: '👩‍⚕️', label: 'ASHA' },
     { id: 'history', icon: '📋', label: ui.history?.split(' ')[0] || 'इतिहास' },
     { id: 'profile', icon: '👤', label: ui.profile?.split(' ')[0] || 'प्रोफाइल' },
   ];
