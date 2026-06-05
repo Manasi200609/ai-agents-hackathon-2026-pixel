@@ -1,21 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useVoice() {
   const [listening, setListening] = useState(false);
+  const [voices, setVoices] = useState([]);
+
+  useEffect(() => {
+    function loadVoices() {
+      setVoices(window.speechSynthesis.getVoices());
+    }
+
+    if ("speechSynthesis" in window) {
+      loadVoices();
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
 
   function speak(text, lang = "mr-IN") {
     if (!text) return;
 
     if (!("speechSynthesis" in window)) {
-      console.warn("Speech synthesis is not supported in this browser");
+      console.warn("Speech synthesis not supported");
       return;
     }
 
+    const availableVoices =
+      voices.length > 0 ? voices : window.speechSynthesis.getVoices();
+
+    const selectedVoice =
+      availableVoices.find((v) => v.lang === lang) ||
+      availableVoices.find((v) => v.lang.startsWith(lang.split("-")[0])) ||
+      availableVoices.find((v) => v.lang === "hi-IN") ||
+      availableVoices.find((v) => v.lang === "en-IN") ||
+      availableVoices[0];
+
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+      utterance.lang = selectedVoice.lang;
+    } else {
+      utterance.lang = lang;
+    }
+
+    utterance.volume = 1;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
 
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+
+    setTimeout(() => {
+      window.speechSynthesis.speak(utterance);
+    }, 150);
+  }
+
+  function stopSpeaking() {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
   }
 
   function startListening({ lang = "mr-IN", onResult, onError } = {}) {
@@ -34,9 +75,7 @@ export function useVoice() {
     recognition.interimResults = false;
     recognition.continuous = false;
 
-    recognition.onstart = () => {
-      setListening(true);
-    };
+    recognition.onstart = () => setListening(true);
 
     recognition.onresult = (event) => {
       const transcript = event.results?.[0]?.[0]?.transcript || "";
@@ -48,23 +87,15 @@ export function useVoice() {
       onError?.(event.error);
     };
 
-    recognition.onend = () => {
-      setListening(false);
-    };
+    recognition.onend = () => setListening(false);
 
     recognition.start();
-  }
-
-  function stopSpeaking() {
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-    }
   }
 
   return {
     listening,
     speak,
-    startListening,
     stopSpeaking,
+    startListening,
   };
 }
