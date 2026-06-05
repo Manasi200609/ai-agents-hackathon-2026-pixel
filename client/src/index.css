@@ -1882,3 +1882,55 @@ body:has(.chat-page) .nav-indicator { background: var(--gold-500) !important; }
   font-weight: 800;
   font-size: 0.85rem;
 }
+/* FIX: readable text on History screen */
+.history-screen,
+.history-screen * {
+  color: #123d2d;
+}
+
+.history-card,
+.history-item,
+.correction-history-card,
+.history-empty {
+  background: rgba(255, 255, 248, 0.96);
+  color: #123d2d;
+}
+
+.history-card p,
+.history-card span,
+.history-card h1,
+.history-card h2,
+.history-card h3,
+.history-item p,
+.history-item span {
+  color: #123d2d;
+}
+
+/* FIX: correction panel input text visible */
+.correction-panel,
+.correction-panel * {
+  color: #123d2d;
+}
+
+.correction-input,
+.correction-input textarea,
+textarea.correction-input {
+  color: #123d2d !important;
+  background: #fffdf4 !important;
+  caret-color: #123d2d;
+}
+
+.correction-input::placeholder {
+  color: #7b6a45 !important;
+}
+
+/* Also fix normal inputs/textareas if affected */
+input,
+textarea {
+  color: #123d2d;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7b6a45;
+}
