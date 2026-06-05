@@ -1676,3 +1676,154 @@ body:has(.chat-page) .nav-indicator { background: var(--gold-500) !important; }
 
   .emergency-card:hover { transform: translateY(-1px); }
 }
+.correction-panel {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 248, 0.96);
+  border: 1px solid rgba(198, 151, 73, 0.35);
+  box-shadow: 0 14px 32px rgba(12, 48, 32, 0.14);
+}
+
+.correction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.correction-title {
+  font-weight: 800;
+  color: #0f3b2e;
+  margin: 0 0 10px;
+}
+
+.correction-close {
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: #6b4b21;
+  cursor: pointer;
+}
+
+.correction-context {
+  background: #f7efd8;
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+
+.correction-context.ai {
+  background: #e9f3ea;
+}
+
+.correction-context span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #6b4b21;
+}
+
+.correction-context p {
+  margin: 4px 0 0;
+  color: #153d2d;
+  font-size: 0.92rem;
+}
+
+.correction-label {
+  display: block;
+  margin: 12px 0 7px;
+  font-weight: 700;
+  color: #153d2d;
+  font-size: 0.9rem;
+}
+
+.correction-input {
+  width: 100%;
+  resize: none;
+  border-radius: 14px;
+  border: 1px solid rgba(18, 74, 52, 0.25);
+  padding: 11px 12px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.dialect-options,
+.severity-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dialect-btn,
+.severity-chip {
+  border: 1px solid rgba(18, 74, 52, 0.22);
+  background: #fffaf0;
+  color: #173d2c;
+  border-radius: 999px;
+  padding: 8px 11px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.dialect-btn.selected,
+.severity-chip.selected {
+  background: #173d2c;
+  color: #fff8df;
+}
+
+.correction-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cancel-btn,
+.submit-btn {
+  flex: 1;
+  border: none;
+  border-radius: 14px;
+  padding: 11px 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: #efe4c8;
+  color: #3d2f14;
+}
+
+.submit-btn {
+  background: #123d2d;
+  color: white;
+}
+
+.submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.correction-error {
+  color: #b42318;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+
+.correction-panel.success {
+  text-align: center;
+  background: #f0faef;
+}
+
+.success-icon {
+  font-size: 2rem;
+}
+
+.success-text {
+  font-weight: 900;
+  color: #123d2d;
+  margin: 4px 0;
+}
+
+.success-sub {
+  color: #416352;
+  font-size: 0.9rem;
+}
